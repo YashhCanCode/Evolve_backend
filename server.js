@@ -20,39 +20,39 @@ console.log("🔑 Loaded ENV:", {
   PORT: process.env.PORT,
 });
 
-// mongoose.connect(MONGO_URI, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// })
-// .then(() => console.log(`✅ Connected to MongoDB: ${MONGO_URI.includes("localhost") ? "Local" : "Atlas"}`))
-// .catch((err) => {
-//   console.error("❌ MongoDB connection error:", err);
-//   process.exit(1);
-// });
+mongoose.connect(MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log(`✅ Connected to MongoDB: ${MONGO_URI.includes("localhost") ? "Local" : "Atlas"}`))
+.catch((err) => {
+  console.error("❌ MongoDB connection error:", err);
+  process.exit(1);
+});
 
-let isConnected = false;
-async function connectToMongoDB(){
-  try{
-    await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    isConnected = true;
-    console.log(`✅ Connected to MongoDB: ${MONGO_URI.includes("localhost") ? "Local" : "Atlas"}`);
-  }catch(error){
-    console.error("❌ MongoDB connection error:", error);
-  }
-}
+// let isConnected = false;
+// async function connectToMongoDB(){
+//   try{
+//     await mongoose.connect(process.env.MONGO_URI, {
+//       useNewUrlParser: true,
+//       useUnifiedTopology: true,
+//     });
+//     isConnected = true;
+//     console.log(`✅ Connected to MongoDB: ${MONGO_URI.includes("localhost") ? "Local" : "Atlas"}`);
+//   }catch(error){
+//     console.error("❌ MongoDB connection error:", error);
+//   }
+// }
 
-//add middleware 
+// //add middleware 
 
-app.use((req, res, next) => {
-  if(!isConnected){
-    connectToMongoDB().then(() => next());
-  }else{
-    next();
-  }
-} );
+// app.use((req, res, next) => {
+//   if(!isConnected){
+//     connectToMongoDB().then(() => next());
+//   }else{
+//     next();
+//   }
+// } );
 
 
 // ✅ CORS setup
@@ -76,12 +76,12 @@ app.get("/", (req, res) => {
   res.send("✅ Backend is up and running!");
 });
 
-// const PORT = process.env.PORT || 5050;
-// app.listen(PORT, () => {
-//   console.log(`🚀 Server running on port ${PORT}`);
-// });
+const PORT = process.env.PORT || 5050;
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
 
-// do not use app.listen()
-module.exports = app;
+// // do not use app.listen()
+// module.exports = app;
 
 require("./scheduler");
